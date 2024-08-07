@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do list</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        p {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            margin-bottom: 10px;
+            width: 300px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .add-button {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .add-button:hover {
+            background-color: #218838;
+        }
+        
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+        
+        .todo-item p {
+            margin: 0;
+            font-size: 18px;
+            flex-grow: 1;
+        }
+        
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .delete-button:hover {
+            background-color: #450e13;
+        }
+        
+        .edit-button {
+            background-color: #cae148;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 25px;
+        }
+        
+        .edit-button:hover {
+            background-color: #36370c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p id="demo">To do list</p>
+    <input class="js-name-input" id="name" type="text" placeholder="Enter name" oninput="uppercase()">
+    <button class="add-button" onclick="addTodo();">Add</button>
+
+    <div class="js-todo-list"></div>
+
+    <script>
+        //var to add in local storage
+        let todoList = JSON.parse(localStorage.getItem('todoList')) || [];
+
+        renderTodoList();
+
+        function renderTodoList() {
+            let todoListHTML = '';
+
+            for (let i = 0; i < todoList.length; i++) {
+                const todo = todoList[i];
+
+                const html = `
+            <div class="todo-item" data-index="${i}" onmouseover="handleMouseOver(this)" onmouseout="handleMouseOut(this)">
+                <p class="${todo.completed ? 'completed' : ''}">${todo.text}</p>
+                <button class="edit-button" onclick="editTodoItem(${i});">Edit</button>
+                <button class="delete-button" onclick="deleteTodo(${i});">Delete</button>
+            </div>
+        `;
+
+                todoListHTML += html;
+            }
+
+            document.querySelector('.js-todo-list').innerHTML = todoListHTML;
+        }
+
+        function addTodo() {
+            const inputElement = document.querySelector('.js-name-input');
+            let name = inputElement.value.trim();
+
+            if (name) {
+                name = uppercase(name);
+                todoList.push({
+                    text: name,
+                    completed: false
+                });
+                inputElement.value = '';
+                saveToLocalStorage();
+                renderTodoList();
+            } else {
+                alert('Please enter a valid name.');
+            }
+        }
+
+        function deleteTodo(index) {
+            todoList.splice(index, 1);
+            saveToLocalStorage(); //for dlt to edit in local storage
+            renderTodoList();
+        }
+
+        function editTodoItem(index) {
+            const newName = prompt('Enter new name:');
+            if (newName) {
+                todoList[index].text = newName;
+                saveToLocalStorage(); //for save in local storage
+                renderTodoList();
+            }
+        }
+
+        function uppercase(text) {
+            return text.toUpperCase();
+        }
+
+        function handleMouseOver(todoItem) {
+            todoItem.style.backgroundColor = 'red';
+        }
+
+        function handleMouseOut(todoItem) {
+            todoItem.style.backgroundColor = 'orange';
+        }
+
+        document.querySelector('.js-name-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                addTodo();
+            }
+        });
+
+
+        //function to save data in local storage
+        function saveToLocalStorage() {
+            localStorage.setItem('todoList', JSON.stringify(todoList));
+        }
+    </script>
+</body>
+
+</html>
