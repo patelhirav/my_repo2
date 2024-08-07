@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <form id="validationForm" method="POST" action='https://gorest.co.in/public/v2/users?access-token=a8a3a90839920dd03f8f9fdd04f0ab14af9fe2631e698ddc52fba312104eeaf5'>
+            <h2>Validation Form</h2>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
+                <div class="error-message" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender:</label>
+                <div>
+                    <input type="radio" id="male" name="gender" value="male"> Male
+                </div>
+                <div>
+                    <input type="radio" id="female" name="gender" value="female"> Female
+                </div>
+                <div class="error-message" id="genderError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status:</label>
+
+                <select id="status" name="status">
+                    <option value="Select">Select</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <div class="error-message" id="statusError"></div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="submit" onclick="validateForm(event)">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <h2>Submitted Data</h2>
+        <table id="data">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Status</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
